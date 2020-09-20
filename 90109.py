@@ -1,16 +1,27 @@
-q1= input('請輸入x值')
-w2= input("請輸入y值")
-e3= input("請輸入z值")
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Sep 20 22:05:06 2020
 
-a=(float(q1))
-b=(float(w2))
-c=(float(e3))
+@author: Buttercup
+"""
 
-x=(b*b-4*a*c)
-if x<=0:
-    print("無")
+string= "I Love you"
+res= string.split(' ')
+print(res)
 
-else:
-     d=(-b+(b*b-4*a*c)**0.5)/(2*a) 
-     e=(-b-(b*b-4*a*c)**0.5)/(2*a)  
-     print("x1=",d,"x2=",e)
+#########################################
+string="I Love You"
+a=string[::-1]
+print(a.split(" "))
+#########################################
+a="I Love You"
+b="so "*100
+c="much"
+print(a+" "+b+" "+c)
+######################################
+a="I Love You"
+import random
+b=random.randint(1,100)
+c=str("so "*b)
+d="much"
+print(a+" "+c+" "+d)
