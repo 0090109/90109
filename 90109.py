@@ -1,27 +1,30 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Sep 20 22:05:06 2020
+score=['小徐',5,9,6,8,7,10,6]
+print(max(score[1:]))
 
-@author: Buttercup
-"""
+print(min(score[1:]))
 
-string= "I Love you"
-res= string.split(' ')
-print(res)
+c=sorted(score[1:],reverse=True)
+d=c[0:3]
 
-#########################################
-string="I Love You"
-a=string[::-1]
-print(a.split(" "))
-#########################################
-a="I Love You"
-b="so "*100
-c="much"
-print(a+" "+b+" "+c)
-######################################
-a="I Love You"
+e=c[4:8]
+print(e)
+
+a=sum(score[1:])
+b=len(score[1:])
+print(int(a/b))
+####################################
+for x in range(1,10):
+    for y in range(1,10):
+        print('%ix%i=%2i' % (x, y, y*y), end=' ')
+    print()
+####################################
+
 import random
-b=random.randint(1,100)
-c=str("so "*b)
-d="much"
-print(a+" "+c+" "+d)
+d=random.randint(1,100)
+s=str(" So"*d)
+a="I love so much"
+for y in a :
+    if  y=="s":
+         c =a.replace("so",s)
+"".join(c.split())
+print(c)
