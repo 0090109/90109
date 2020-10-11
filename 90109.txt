@@ -63,7 +63,7 @@ s.append(list2[3][0])
 s.append(list2[4][0])
 s.append(list2[5][0])
 print(s)
-########################
+#########################
 list1=[1,2,3,4]
 list2=[5,6,7,8]
 a=list(zip(list1,list2))
@@ -71,11 +71,13 @@ print(a)
 #########################
 s='I love you and you love him and who loves who'
 a=s.split(' ')
-b=set(a)
-keys=b
+keys=set()
+print(keys.pop())
 
-c = {x: a.count(x) for x in b}
-values=[c for i in b]
-d={key: value for key,value in zip(keys,values)}
+values=[0 for i in keys]
+d={keys: value for key,value in zip(keys,values)}
 
-print(c)
+# c = {keys: a.count(keys) for d in d}
+# print(c)  
+
+    
