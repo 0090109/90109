@@ -1,64 +1,57 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Sep 28 08:12:43 2020
-
-@author: cis-user
+Created on Mon Dec  9 08:03:43 2020
+@author: 
 """
-
+from selenium import webdriver
+import csv
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
+import time,datetime
+import sys
 from selenium.webdriver.support.ui import Select
-
-# r = requests.get("https://udn.com/news/story/7321/5018383?from=udn_ch2_menu_v2_main_index")
-r = requests.get("https://www.cna.com.tw/news/firstnews/202011235005.aspx")
-r.encoding = "utf8"
-
-with open('html.txt', "w", encoding="utf8") as fp:
-    # print(r.text,file=fp)                                 ##可用print，也可用write
-    fp.write(r.text)
-    
-with open('html.txt', "r", encoding="utf8") as fp2:
-    r2=fp2.read() 
-    
-page_source = r.text
-page_source2 = page_source.split('\n')
-
-soup = BeautifulSoup(r.text, "lxml")
-a1=[]
-a2=[]
-a3=[]
-###################################第一種#######################################
-tag_div=soup.find_all('div',class_="centralContent")
-print(tag_div)
-print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-for a in tag_div:
-    print(a.text)
-a1.append(a.text)
-##################################第二種#######################################
-tag_div1=soup.find_all('div',class_="page--index")
-print(tag_div1)
-print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-for a in tag_div1:
-    print(a.text)
-a2.append(a.text)
-##########################################################################
-tag_div2=soup.find_all('div',class_="container")
-print(tag_div2)
-print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-for a in tag_div2:
-    print(a.text)
-a3.append(a.text)
-
-import csv
-csvfile='政豪.csv'
-with open(csvfile,'w',newline='',encoding='utf-8-sig' )as fp:
-    writer=csv.writer(fp)
-    writer.writerow([a1[0]])
-    writer.writerow([a2[0]])
-    writer.writerow([a3[0]])
-
-
-
-
-
+url="https://www.ettoday.net/news/news-list.htm"
+options=webdriver.ChromeOptions()
+options.add_argument('--ignore-certificate-errors')
+driver=webdriver.Chrome(chrome_options=options)
+driver.get(url)
+now = datetime.datetime.now()
+page=0
+with open('5份天新聞.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
+    writer = csv.writer(csvfile)
+    writer.writerow(('日期','分類','連結'))
+    writer.writerow(['標題'])
+    for i in range(5):
+        page+=1
+        html = driver.page_source
+        sp=BeautifulSoup(html,"html.parser")
+        search_h3=sp.select("div.part_list_2 > h3 > a")
+        search_a=sp.select("div.part_list_2 > h3 > span")
+        search_b=sp.select("div.part_list_2 > h3 > em")
+        for i in range(5):  
+            print(page)
+            print(search_a[i].text,end=' ')
+            print(search_b[i].text,end=' ')
+            print(search_h3[i].text,end=' ')
+            print(search_h3[i].get('href'))
+            writer.writerow([search_a[i].text,search_b[i].text,search_h3[i].get('href')])
+            writer.writerow([search_h3[i].text])
+        delta = datetime.timedelta(days=1)
+        now= now-delta
+        n_days1=now.strftime('%Y%m%d')
+        a=n_days1[-2:]
+        a=int(a)#避免7號變成07號
+        a=str(a)
+        b=n_days1[-4:-2]
+        b=int(b)#避免7月變成07月
+        b=str(b)
+        driver.find_element_by_id("selM").click()
+        Select(driver.find_element_by_id("selM")).select_by_visible_text(b)
+        driver.find_element_by_id("selM").click()
+        driver.find_element_by_id("selD").click()
+        Select(driver.find_element_by_id("selD")).select_by_visible_text(a)
+        driver.find_element_by_id("selD").click()
+        driver.find_element_by_id("button").click()
+        time.sleep(2)  
+driver.close()              
+sys.exit
